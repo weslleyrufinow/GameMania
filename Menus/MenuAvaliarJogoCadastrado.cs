@@ -1,6 +1,4 @@
 namespace GameMania.Menus;
-
-using System.Diagnostics;
 using GameMania.Modelos;
 
 internal class MenuAvaliarJogoCadastrado: Menu{
@@ -20,27 +18,14 @@ internal class MenuAvaliarJogoCadastrado: Menu{
 
         if(aux != "-1"){
             Jogo? jogo = jogoDAO?.JogoPorTitulo(aux);
-            if(jogo?.Disponibilidade == false){
+            if(jogo?.Disponibilidade == false || jogo == null){
                 Console.WriteLine("Jogo Indisponivel Para Avaliacao.");
                 return;
+            }else{
+                jogo.Notas = jogo.Notas==null? new List<int>() : jogo.Notas;
+                jogo.Notas = ForcedValidationNotas(jogo.Notas); 
             }
-            Console.WriteLine("Insira Notas | Digite -1 Para Cancelar: ");
-            float n = 0;
-
-            jogo = jogo == null ? new Jogo(): jogo; //Apenas para tirar o warning
-            jogo.Notas = jogo.Notas == null ? new List<float>{} : jogo.Notas; //Apenas para tirar o warning
-            
-            while(n >= 0){
-                aux = Console.ReadLine();
-                n = ForcedValidationFloat(aux);
-                if(n>=0){   
-                    jogo.Notas.Add(n);
-                }else{
-                    n=-1;
-                }
-            }
-            jogoDAO?.SalvarJogo(jogo);   
-            
+            jogoDAO?.SalvarJogo(jogo);    
         }
     }
 }

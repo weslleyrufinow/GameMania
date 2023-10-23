@@ -8,7 +8,7 @@ internal class Menu {
     protected JogoDAO? jogoDAO;
     public Menu(string titulo = ""){
         Titulo = titulo;
-        jogoDAO = JogoMemDAO.GetInstance();
+        jogoDAO = JogoSQLiteDAO.GetInstance();
     }
     public virtual void ExecutarMenu(){
         ExibirTituloDaOpcao(Titulo);
@@ -48,6 +48,31 @@ internal class Menu {
             aux = Console.ReadLine();
         }
         return value;
+    }
+
+    public int ForcedValidationInt(string? aux) {
+        int value;
+        while (!int.TryParse(aux, out value)) {
+            Console.Write("Tente Novamente: ");
+            aux = Console.ReadLine();
+        }
+        return value;
+    }
+
+    public List<int> ForcedValidationNotas(List<int> notas){
+        string? aux;
+        int n = 0;
+        Console.Write("Notas | Digite -1 Para Cancelar: ");
+        while(n >= 0 && n<=10){
+            aux = Console.ReadLine();
+            n = ForcedValidationInt(aux);
+            if(n >= 0 && n<=10){
+                notas.Add(n);
+            }else{
+                n=-1;
+            }
+        }
+        return notas;
     }
 
 }

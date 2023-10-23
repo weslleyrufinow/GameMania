@@ -18,7 +18,7 @@ internal class MenuCadastrarNovoJogo: Menu{
         }
         
         if(aux != "-1"){
-            Jogo? jogo = new(titulo:aux);
+            Jogo? jogo = new(nome:aux);
             Console.Write("Genero: ");
             aux = Console.ReadLine();
             jogo.Genero = ForcedValidationString(aux);
@@ -30,6 +30,10 @@ internal class MenuCadastrarNovoJogo: Menu{
             Console.Write("Edicao: ");
             aux = Console.ReadLine();
             jogo.Edicao = ForcedValidationString(aux);
+
+            Console.Write("Plataformas: ");
+            aux = Console.ReadLine();
+            jogo.Plataforma = ForcedValidationString(aux);
 
             Console.Write("Disponivel Para Avaliacao? (1 == Sim | 0 == Nao)");
             while (true){
@@ -44,26 +48,14 @@ internal class MenuCadastrarNovoJogo: Menu{
                     Console.Write("Tente Novamente: ");
                 }
             }
-
-            Console.Write("Plataformas: ");
-            aux = Console.ReadLine();
-            jogo.Plataformas = ForcedValidationString(aux);
-
-            jogo.Notas = new List<float>{};//Evitar Warning
-            Console.Write("Notas | Digite -1 Para Cancelar: ");
-            float n = 0;
-            while(n >= 0){
-                aux = Console.ReadLine();
-                n = ForcedValidationFloat(aux);
-                if(n>=0){
-                    jogo.Notas.Add(n);
-                }else{
-                    n=-1;
-                }
+            
+            if(jogo.Disponibilidade == true){
+                jogo.Notas = jogo.Notas==null? new List<int>() : jogo.Notas;
+                jogo.Notas = ForcedValidationNotas(jogo.Notas);
             }
-            jogo.Titulo = string.IsNullOrEmpty(jogo.Titulo)?"":jogo.Titulo;
-            jogoDAO?.SalvarJogo(jogo);
-            Console.WriteLine("Jogo Adicionado Com Sucesso");        
+
+            jogo.Nome = string.IsNullOrEmpty(jogo.Nome)?"":jogo.Nome;
+            jogoDAO?.SalvarJogo(jogo);    
         }else{
             Console.WriteLine("Cadastro Cancelado");
         }

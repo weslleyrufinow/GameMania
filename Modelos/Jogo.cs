@@ -1,12 +1,21 @@
 namespace GameMania.Modelos;
 public class Jogo {
-    private string? titulo;
-    public string? Titulo {
+    private string? nome;
+    public string? Nome {
         get{ 
-            return string.IsNullOrEmpty(titulo)?"":titulo;
+            return string.IsNullOrEmpty(nome)?"":nome;
         } 
         set{ 
-            titulo = string.IsNullOrEmpty(value)?"":value;
+            nome = string.IsNullOrEmpty(value)?"":value;
+        }
+    }
+    private string? edicao;
+    public string? Edicao {
+        get{ 
+            return string.IsNullOrEmpty(edicao)?"":edicao;
+        } 
+        set{ 
+            edicao = string.IsNullOrEmpty(value)?"":value;
         }
     }
     private string? genero;
@@ -27,19 +36,10 @@ public class Jogo {
             studio = string.IsNullOrEmpty(value)?"":value;
         }
     }
-    private string? edicao;
-    public string? Edicao {
-        get{ 
-            return string.IsNullOrEmpty(edicao)?"":edicao;
-        } 
-        set{ 
-            edicao = string.IsNullOrEmpty(value)?"":value;
-        }
-    }
     private string? descricao;
     public string? Descricao {
         get{ 
-            return string.IsNullOrEmpty(descricao)?$"{Titulo} - {Studio}":descricao;
+            return string.IsNullOrEmpty(descricao)?$"{nome} - {Studio}":descricao;
         }
         set{ 
             descricao = string.IsNullOrEmpty(value)?"":value;
@@ -54,61 +54,59 @@ public class Jogo {
             disponibilidade = value;
         }
     }
-    private string? plataformas;
-    public string? Plataformas {
+    private string? plataforma;
+    public string? Plataforma {
         get{ 
-            return string.IsNullOrEmpty(plataformas)?"":plataformas;
+            return string.IsNullOrEmpty(plataforma)?"":plataforma;
         } 
         set{ 
-            plataformas = string.IsNullOrEmpty(value)?"":value;
+            plataforma = string.IsNullOrEmpty(value)?"":value;
         }
     }
-    private List<float> notas = new();
-    public List<float>? Notas {
+    private List<int> notas = new();
+    public List<int>? Notas {
         get{ 
-            return notas==null ? new List<float>{}:notas;
+            return notas==null ? new List<int>{}:notas;
         } 
         set{ 
-            notas = value==null ? new List<float>{}:value;
+            notas = value==null ? new List<int>{}:value;
         }
     }
-    public Jogo(string? titulo="", string? genero="", string? studio="", string? edicao="", string? descricao="", bool disponibilidade=false, string? plataformas="", List<float>? notas = null){
-        Titulo = titulo;
-        Genero = genero;
-        Studio = studio;
+    public Jogo(string? nome="", string? edicao="",string? genero="", string? studio="",  string? descricao="", bool disponibilidade=false, string? plataforma="", List<int>? notas = null){
+        Nome = nome;
         Edicao = edicao;
         Descricao = descricao;
         Disponibilidade = disponibilidade;
-        Plataformas = plataformas;
-        Notas = notas ?? new List<float>(){};
+        Genero = genero;
+        Studio = studio;
+        Plataforma = plataforma;
+        Notas = notas ?? new List<int>(){};
     }
 
     public float AvaliacaoMedia {
         get {
-            Notas = (Notas==null)?new List<float>{0}:Notas;
+            Notas = (Notas==null)?new List<int>{0}:Notas;
             if (Notas.Count == 0) {
                 return 0;
             }
             float soma = 0;
-            foreach (float nota in Notas) {
+            foreach (int nota in Notas) {
                 soma += nota;
             }
             return soma/Notas.Count;
         }    
     }
     public void ExibirFichaTecnica() {
-        Console.WriteLine($"Título: {Titulo}");
+        Console.WriteLine($"Título: {nome}");
         Console.WriteLine($"Gênero: {Genero}");
-        Console.WriteLine($"Estúdio: {Studio}");
+        Console.WriteLine($"Estúdio: {Studio}");    
         Console.WriteLine($"Edição: {Edicao}");
         Console.WriteLine($"Descricao: {Descricao}");
-        Console.WriteLine($"Plataformas: {Plataformas}");
+        Console.WriteLine($"Plataforma: {Plataforma}");
         Console.Write($"Notas: ");
-        Notas = (Notas==null)?new List<float>{0}:Notas;
-        foreach (float? nota in Notas){
-            if(nota.HasValue){
+        Notas = (Notas==null)?new List<int>{0}:Notas;
+        foreach (int nota in Notas){
                 Console.Write(nota + " ");
-            }
         }
         Console.WriteLine($"\nMedia: {AvaliacaoMedia:F2}");
         if(Disponibilidade) {
